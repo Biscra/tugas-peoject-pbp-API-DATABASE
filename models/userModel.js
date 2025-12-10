@@ -24,4 +24,12 @@ const delBook = async(id)=>{
     return aff[0].affectedRows
 }
 
-module.exports = {getAllBooks,getBookByCode,addBook,delBook}
+const updateBook = async (kode, book) => {
+    const { judul, pengarang, penerbit } = book
+    const query = "UPDATE buku " + "SET judul = ?, pengarang = ?, penerbit = ? " + "WHERE kode_buku = ?"
+    const affected = await db.query(query, [judul, pengarang, penerbit, kode])
+    return affected[0].affectedRows
+}
+
+
+module.exports = {getAllBooks,getBookByCode,addBook,delBook,updateBook}
