@@ -80,4 +80,41 @@ const delBook = async(req,res)=>{
     }
 }
 
-module.exports = {getAllBooks,getBookByCode,addBook,delBook}
+const updateBook = async (req, res) => {
+    const kode = req.params.code
+    const { judul, pengarang, penerbit } = req.body
+    if (!judul || !pengarang || !penerbit) {
+        return res.status(400).json({
+            message: "Judul, Pengarang, dan Penerbit wajib diisi!"
+        })
+    }
+
+    try {
+        const existing = await userModel.getBookByCode(kode)
+        if (!existing) {
+            return res.status(404).json({
+                message: "Data Not Found"
+            })
+        }
+        const affected = await userModel.updateBook(kode, req.body)
+        if (affected === 1) {
+            res.status(200).json({
+                msg: "Update successful",
+                data: {kode, judul, pengarang, penerbit}
+            })
+        } 
+        else {
+            res.status(400).json({
+                message: "Update failed"
+            })
+        }
+    } 
+    catch (error) {
+        res.status(500).json({
+            message: "Error while updating",
+            error: error
+        })
+    }
+}
+
+module.exports = {getAllBooks,getBookByCode,addBook,delBook,updateBook}
