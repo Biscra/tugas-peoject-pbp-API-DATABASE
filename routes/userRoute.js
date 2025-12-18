@@ -6,6 +6,9 @@ const router = express.Router()
 router.get('/',userControl.getAllBooks)
 router.get('/:code',userControl.getBookByCode)
 
+router.get('/',userControl.getAllUser)
+router.get('/:id',userControl.getUserById)
+
 router.post('/', userControl.addBook)
 router.delete('/:code', userControl.delBook)
 
